@@ -1,0 +1,12 @@
+services:
+  db:
+    image: mysql
+    container_name: my_mysql_db
+    # restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: cats4ever
+      MYSQL_DATABASE: K4Cook
+      MYSQL_USER: cats
+      MYSQL_PASSWORD: cats4life
+    ports:
+      - "3306:3306"
