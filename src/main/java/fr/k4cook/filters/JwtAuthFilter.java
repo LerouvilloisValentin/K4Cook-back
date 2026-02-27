@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -14,7 +13,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import fr.k4cook.configs.SecurityConfig;
 import fr.k4cook.services.JwtService;
 import fr.k4cook.services.UserDetailsServiceImpl;
-import jakarta.annotation.PostConstruct;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,15 +36,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
      */
     @Autowired
     UserDetailsServiceImpl userDetailsServiceImpl;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @PostConstruct
-    public void testPassword() {
-        String hash = "$2a$10$Dow1RzYpQeWb9mC3n5Jk6eUuO2eH3u7l8YxVtWqZ1oR9pLmN0aBc";
-        System.out.println(passwordEncoder.matches("admin123", hash));
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

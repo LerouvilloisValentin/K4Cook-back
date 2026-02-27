@@ -93,17 +93,16 @@ public class UserAccountController {
 	 * GET Route to user
 	 * 
 	 * @param userLoginDto UserLoginDto
-	 * @return Status OK if register, or status 400 if not valid
+	 * @return Status OK if delete, or status 400 if not valid
 	 */
-	@Operation(summary = "Get User login")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Successfully find all", content = {
+	@Operation(summary = "Delete own account")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Successfully delete", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto[].class)) }),
 			@ApiResponse(responseCode = "400", description = "", content = @Content) })
 	@DeleteMapping()
-	public ResponseEntity<?> getCurrentUser(Authentication authentication) {
+	public ResponseEntity<?> deleteCurrentUser(Authentication authentication) {
 		String email = authentication.getName();
 		UserAccount userAccount = userAccountRepository.findByEmail(email);
-		System.out.println("userAccount" + userAccount);
 		if (userAccount == null) {
 			return ResponseEntity.notFound().build();
 		}
