@@ -3,10 +3,12 @@ package fr.k4cook.controllers;
 import static fr.k4cook.utils.ControllerUtils.checkErrors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +21,7 @@ import fr.k4cook.dtos.auth.JwtAuthenticationResponse;
 import fr.k4cook.dtos.auth.UserLoginDto;
 import fr.k4cook.dtos.auth.UserRegisterDto;
 import fr.k4cook.dtos.user.UserResponseDto;
+import fr.k4cook.entities.UserAccount;
 import fr.k4cook.repositories.UserAccountRepository;
 import fr.k4cook.services.UserAccountService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -84,6 +87,29 @@ public class UserAccountController {
 		JwtAuthenticationResponse token = userAccountService.login(userLoginDto);
 
 		return ResponseEntity.ok(token);
+	}
+
+	/**
+	 * GET Route to user
+	 * 
+	 * @param userLoginDto UserLoginDto
+	 * @return Status OK if register, or status 400 if not valid
+	 */
+	@Operation(summary = "Get User login")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Successfully find all", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto[].class)) }),
+			@ApiResponse(responseCode = "400", description = "", content = @Content) })
+	@DeleteMapping()
+	public ResponseEntity<?> getCurrentUser(Authentication authentication) {
+		String email = authentication.getName();
+		UserAccount userAccount = userAccountRepository.findByEmail(email);
+		System.out.println("userAccount" + userAccount);
+		if (userAccount == null) {
+			return ResponseEntity.notFound().build();
+		}
+		userAccountRepository.delete(userAccount);
+		return ResponseEntity
+				.noContent().build();
 	}
 
 	/**
