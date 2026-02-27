@@ -97,7 +97,6 @@ public class UserAccountController {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto[].class)) }),
 			@ApiResponse(responseCode = "400", description = "", content = @Content) })
 	@GetMapping()
-	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> getUsers() {
 		return ResponseEntity
 				.ok(userAccountRepository.findAll().stream().map(user -> new UserResponseDto(user)).toList());
@@ -109,7 +108,7 @@ public class UserAccountController {
 	 * @param userLoginDto UserLoginDto
 	 * @return Status OK if register, or status 400 if not valid
 	 */
-	@Operation(summary = "Get All Users")
+	@Operation(summary = "Get All Users by containing")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Successfully find all", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto[].class)) }),
 			@ApiResponse(responseCode = "400", description = "", content = @Content) })
