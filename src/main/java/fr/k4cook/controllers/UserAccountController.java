@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.k4cook.dtos.auth.JwtAuthenticationResponse;
@@ -23,6 +24,7 @@ import fr.k4cook.dtos.auth.UserRegisterDto;
 import fr.k4cook.dtos.user.UserResponseDto;
 import fr.k4cook.entities.UserAccount;
 import fr.k4cook.repositories.UserAccountRepository;
+import fr.k4cook.services.PasswordResetService;
 import fr.k4cook.services.UserAccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -49,6 +51,9 @@ public class UserAccountController {
 	 */
 	@Autowired
 	private UserAccountRepository userAccountRepository;
+
+	@Autowired
+	private PasswordResetService passwordResetService;
 
 	/**
 	 * POST Route to register an user
@@ -87,6 +92,29 @@ public class UserAccountController {
 		JwtAuthenticationResponse token = userAccountService.login(userLoginDto);
 
 		return ResponseEntity.ok(token);
+	}
+
+	@Operation(summary = "forgot password")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "User Succesfuly try to forgot password", content = {
+					@Content(mediaType = "application/json", schema = @Schema(implementation = JwtAuthenticationResponse.class)) }),
+			@ApiResponse(responseCode = "400", description = "Validation failed", content = @Content) })
+	@PostMapping("/forgot-password")
+	public String forgotPassword(@RequestParam String email) {
+
+		passwordResetService.createPasswordResetToken(email);
+
+		return "Si un compte existe avec cet email, un lien a été envoyé.";
+	}
+
+	@PostMapping("/reset-password")
+	public String resetPassword(
+			@RequestParam String token,
+			@RequestParam String password) {
+
+		passwordResetService.resetPassword(token, password);
+
+		return "Mot de passe mis à jour.";
 	}
 
 	/**

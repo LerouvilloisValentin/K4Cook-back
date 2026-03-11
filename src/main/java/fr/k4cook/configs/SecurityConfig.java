@@ -53,6 +53,7 @@ public class SecurityConfig {
 	public static final List<RequestMatcher> ignoredPostPaths = new ArrayList<RequestMatcher>(Arrays.asList(
 			new AntPathRequestMatcher("/user/login"),
 			new AntPathRequestMatcher("/user/register"),
+			new AntPathRequestMatcher("/user/forgot-password"),
 			new AntPathRequestMatcher("/user/getEmails")));
 
 	/**
@@ -144,6 +145,7 @@ public class SecurityConfig {
 						"/forums/**",
 						"/sections",
 						"/sections/**",
+						"/user/forgot-password",
 						"/messages",
 						"/messages/**")
 				.permitAll()
