@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
 
+@Entity
 public class PasswordResetToken {
 
     @Id
@@ -13,6 +14,7 @@ public class PasswordResetToken {
     private LocalDateTime expirationDate;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private UserAccount user;
 
     public PasswordResetToken() {

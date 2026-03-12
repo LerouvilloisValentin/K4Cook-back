@@ -5,12 +5,14 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import fr.k4cook.entities.PasswordResetToken;
 import fr.k4cook.entities.UserAccount;
 import fr.k4cook.repositories.PasswordResetTokenRepository;
 import fr.k4cook.repositories.UserAccountRepository;
 
+@Service
 public class PasswordResetService {
 
     @Autowired

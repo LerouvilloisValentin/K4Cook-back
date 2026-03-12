@@ -107,6 +107,11 @@ public class UserAccountController {
 		return "Si un compte existe avec cet email, un lien a été envoyé.";
 	}
 
+	@Operation(summary = "reset password")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Reset password Succesfuly done", content = {
+					@Content(mediaType = "application/json", schema = @Schema(implementation = JwtAuthenticationResponse.class)) }),
+			@ApiResponse(responseCode = "400", description = "Validation failed", content = @Content) })
 	@PostMapping("/reset-password")
 	public String resetPassword(
 			@RequestParam String token,
